@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (config.weekly_threshold) scanForm.weekly_threshold.value = config.weekly_threshold;
             if (config.primary_threshold) scanForm.primary_threshold.value = config.primary_threshold;
             if (config.allow_disabled !== undefined) scanForm.allow_disabled.checked = config.allow_disabled;
-        } catch(e) {}
+        } catch (e) { }
     }
 
     loadScanConfig();
@@ -179,19 +179,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 config[key] = value;
             }
         });
-        
+
         // 显式处理 checkbox 可能缺失的情况
         config.enabled = patrolEnabledToggle.checked;
-<<<<<<< HEAD
-=======
         config.emergency_defense = document.getElementById('patrol-emergency-toggle').checked;
-        
+
         // 紧急防御数值处理
         const thresholdPct = parseInt(document.getElementById('emergency-threshold-pct').value) || 50;
         config.emergency_threshold = thresholdPct / 100;
         config.emergency_cooldown_minutes = parseInt(patrolForm.emergency_cooldown_minutes.value) || 5;
 
->>>>>>> 325dd31 (1.0.0)
         config.auto_replenish = patrolForm.auto_replenish.checked;
 
         try {
@@ -212,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cpaServiceSelect.value = cpaServiceMain.value;
         fetchAccountList();
     });
-    
+
     // 开关状态同步到隐藏域
     patrolEnabledToggle.addEventListener('change', () => {
         document.getElementById('patrol-enabled-hidden').value = patrolEnabledToggle.checked;
@@ -348,7 +345,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     delegate(resultsTableBody, 'change', '.selection-checkbox', updateSelectionUI);
-    
+
     // 行点击选择 (排除点击 checkbox 本身)
     delegate(resultsTableBody, 'click', 'tr', (e, target) => {
         if (e.target.tagName === 'INPUT' && e.target.type === 'checkbox') return;
@@ -386,14 +383,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const count = checked.length;
         selectionInfo.textContent = `已选中 ${count} 个`;
         if (selectedCountBold) selectedCountBold.textContent = count;
-        
+
         // 显示/隐藏底部操作条
         if (count > 0) {
             selectionActions.style.display = 'flex';
         } else {
             selectionActions.style.display = 'none';
         }
-        
+
         masterCheckbox.checked = (all.length > 0 && checked.length === all.length);
     }
 
@@ -443,7 +440,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const isEnabled = patrolStatus.config?.enabled;
             const targetId = patrolStatus.config?.service_id;
             const targetName = targetId ? (cpaServiceMap[targetId] || '...') : '未配置';
-            
+
             const statusText = isEnabled ? (patrolStatus.status === 'running' ? '正在执行' : '已开启') : '未运行';
             patrolStatusLabel.textContent = isEnabled ? `[${targetName}] ${statusText}` : '未运行';
 
@@ -467,8 +464,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 patrolEnabledToggle.checked = !!cfg.enabled;
-<<<<<<< HEAD
-=======
                 const emergencyToggle = document.getElementById('patrol-emergency-toggle');
                 if (emergencyToggle) {
                     emergencyToggle.checked = !!cfg.emergency_defense;
@@ -478,9 +473,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     patrolForm.emergency_cooldown_minutes.value = cfg.emergency_cooldown_minutes || 5;
                     toggleEmergencyConfigVisibility();
                 }
->>>>>>> 325dd31 (1.0.0)
                 if (patrolForm.auto_replenish) patrolForm.auto_replenish.checked = !!cfg.auto_replenish;
-                
+
                 // 触发一次显隐切换
                 toggleReplenishVisibility();
             }
@@ -498,26 +492,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-<<<<<<< HEAD
-            container.innerHTML = history.map(item => `
-                <div class="notification-item">
-                    <div class="notif-dot"></div>
-                    <div class="notif-content">
-                        <div class="notif-time">${item.time}</div>
-                        <div class="notif-text">
-                            自动检测扫描结束 | 
-                            <span class="notif-stats">
-                                有效: ${item.total - item.invalid_401 - item.invalid_quota - item.errors}, 
-                                401: ${item.invalid_401}, 
-                                额度耗尽: ${item.invalid_quota}, 
-                                异常: ${item.errors}
-                            </span>
-                            ${item.cleared > 0 ? `<span class="notif-cleared">已清理 ${item.cleared} 个账号</span>` : ''}
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-=======
             container.innerHTML = history.map(item => {
                 let statusInfo = '';
                 if (item.emergency) {
@@ -554,7 +528,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 `;
             }).join('');
->>>>>>> 325dd31 (1.0.0)
         } catch (err) { }
     }
 
@@ -583,7 +556,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const total = status.total || 0;
                 const completed = status.completed || 0;
                 const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
-                
+
                 // 更新模态框进度
                 progressBar.style.width = `${percent}%`;
                 progressStatus.textContent = total > 0 ? `任务进度: ${completed} / ${total}` : '正在准备任务队列...';
@@ -628,7 +601,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             fetchAccountList(); // 保底方案
                         }
                     }
-                    
+
                     // 任务结束，如果后台栏开着，也给个提示
                     if (bgState) bgState.textContent = '完成';
                 }
@@ -667,11 +640,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.getElementById('hide-progress-btn').addEventListener('click', hideProgressModal);
-    
+
     // 后台任务栏按钮
     const bgOpenBtn = document.getElementById('background-task-open-btn');
     if (bgOpenBtn) bgOpenBtn.addEventListener('click', showProgressModalFromBackground);
-    
+
     const bgCloseBtn = document.getElementById('background-task-close-btn');
     if (bgCloseBtn) bgCloseBtn.addEventListener('click', () => {
         document.getElementById('background-task-bar').classList.remove('active');
@@ -684,22 +657,18 @@ function toggleReplenishVisibility() {
     const parallelOptions = document.getElementById('replenish-concurrency-group');
     const pipelineOptions = document.getElementById('replenish-pipeline-group');
     if (!modeEl || !parallelOptions || !pipelineOptions) return;
-    
+
     const isParallel = modeEl.value === 'parallel';
-    
+
     // 并行模式：显示线程数，隐藏间隔
     // 串行模式：隐藏线程数，显示间隔
     parallelOptions.style.display = isParallel ? 'block' : 'none';
     pipelineOptions.style.display = isParallel ? 'none' : 'block';
-    
+
     console.log(`[显隐切换执行器] 并行模式: ${isParallel}, Select: ${modeEl.value}`);
 }
 // 注册一个初始化触发
-window.onload = function() {
-<<<<<<< HEAD
-    setTimeout(toggleReplenishVisibility, 500);
-};
-=======
+window.onload = function () {
     setTimeout(() => {
         toggleReplenishVisibility();
         toggleEmergencyConfigVisibility();
@@ -713,4 +682,3 @@ function toggleEmergencyConfigVisibility() {
         group.style.display = toggle.checked ? 'block' : 'none';
     }
 }
->>>>>>> 325dd31 (1.0.0)
