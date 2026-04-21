@@ -54,7 +54,7 @@ def _get_runtime_dirs() -> tuple[Path, Path]:
 
 def _load_dotenv():
     """加载 .env 文件（可执行文件同目录或项目根目录）"""
-    env_path = "/tmp/.env"
+    env_path = project_root / ".env"
     if not env_path.exists():
         return
     with open(env_path, encoding="utf-8") as f:
