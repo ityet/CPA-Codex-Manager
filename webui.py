@@ -35,11 +35,11 @@ def _get_runtime_dirs() -> tuple[Path, Path]:
       - 其它平台：可执行文件同级目录
     """
     if not getattr(sys, 'frozen', False):
-        return project_root / "data", project_root / "logs"
+        return "/tmp/data", "/tmp/logs"
 
     if platform.system() == "Darwin":
         app_support = Path.home() / "Library" / "Application Support" / "CPA-Codex-Manager"
-        return app_support / "data", app_support / "logs"
+        return "/tmp/data", "/tmp/logs"
 
     if platform.system() == "Windows":
         local_app_data = os.environ.get("LOCALAPPDATA")
@@ -54,7 +54,7 @@ def _get_runtime_dirs() -> tuple[Path, Path]:
 
 def _load_dotenv():
     """加载 .env 文件（可执行文件同目录或项目根目录）"""
-    env_path = project_root / ".env"
+    env_path = "/tmp/.env"
     if not env_path.exists():
         return
     with open(env_path, encoding="utf-8") as f:
