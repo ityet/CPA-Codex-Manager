@@ -63,7 +63,7 @@ SETTING_DEFINITIONS: Dict[str, SettingDefinition] = {
     # 数据库配置
     "database_url": SettingDefinition(
         db_key="database.url",
-        default_value="data/database.db",
+        default_value="/tmp/data/database.db",
         category=SettingCategory.DATABASE,
         description="数据库路径或连接字符串"
     ),
@@ -105,7 +105,7 @@ SETTING_DEFINITIONS: Dict[str, SettingDefinition] = {
     ),
     "log_file": SettingDefinition(
         db_key="log.file",
-        default_value="logs/app.log",
+        default_value="/tmp/logs/app.log",
         category=SettingCategory.LOG,
         description="日志文件路径"
     ),
@@ -611,7 +611,7 @@ class Settings(BaseModel):
     debug: bool = False
 
     # 数据库配置
-    database_url: str = "data/database.db"
+    database_url: str = "/tmp/data/database.db"
 
     @field_validator('database_url', mode='before')
     @classmethod
