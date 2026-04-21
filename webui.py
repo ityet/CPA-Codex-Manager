@@ -35,11 +35,11 @@ def _get_runtime_dirs() -> tuple[Path, Path]:
       - 其它平台：可执行文件同级目录
     """
     if not getattr(sys, 'frozen', False):
-        return "/tmp/data", "/tmp/logs"
+        return Path("/tmp/data"), Path("/tmp/logs")
 
     if platform.system() == "Darwin":
         app_support = Path.home() / "Library" / "Application Support" / "CPA-Codex-Manager"
-        return "/tmp/data", "/tmp/logs"
+        return Path("/tmp/data"), Path("/tmp/logs")
 
     if platform.system() == "Windows":
         local_app_data = os.environ.get("LOCALAPPDATA")
